@@ -1,16 +1,8 @@
-import { useEffect, useRef, type MutableRefObject, type RefObject } from 'react'
+import { useEffect, type MutableRefObject, type RefObject } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
-
-export type TimelineDom = {
-  name: HTMLElement | null
-  quoteLines: Array<HTMLElement | null>
-  quote: HTMLElement | null
-  indicator: HTMLElement | null
-  veil: HTMLElement | null
-}
 
 type Args = {
   stageRef: RefObject<HTMLElement | null>
@@ -25,103 +17,107 @@ export function useLandingTimeline({
   reducedMotion,
   enabled,
 }: Args) {
-  const domRef = useRef<TimelineDom>({
-    name: null,
-    quoteLines: [null, null, null],
-    quote: null,
-    indicator: null,
-    veil: null,
-  })
-
   useEffect(() => {
     if (!enabled) return
     const stage = stageRef.current
     if (!stage) return
 
-    const { name, quoteLines, quote, indicator, veil } = domRef.current
+    let ctx: gsap.Context | undefined
+    let cancelled = false
+    let frame = 0
 
-    if (reducedMotion) {
-      progressRef.current.value = 0
-      if (quote) gsap.set(quote, { autoAlpha: 1 })
-      quoteLines.forEach((line) => {
-        if (line) gsap.set(line, { yPercent: 0, autoAlpha: 1 })
-      })
-      if (veil) gsap.set(veil, { autoAlpha: 0 })
-      if (name) gsap.set(name, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, autoAlpha: 1 })
-      return
-    }
+    const setup = () => {
+      if (cancelled) return
 
-    const ctx = gsap.context(() => {
-      gsap.set(name, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, autoAlpha: 1 })
-      gsap.set(quote, { autoAlpha: 1 })
-      gsap.set(quoteLines, { yPercent: 110, autoAlpha: 1 })
-      gsap.set(indicator, { autoAlpha: 1 })
-      gsap.set(veil, { autoAlpha: 0 })
+      const name = stage.querySelector<HTMLElement>('[data-hero-name]')
+      const quote = stage.querySelector<HTMLElement>('[data-quote]')
+      const lines = gsap.utils.toArray<HTMLElement>('[data-quote-line]', stage)
+      const indicator = stage.querySelector<HTMLElement>('[data-scroll-indicator]')
+      const veil = stage.querySelector<HTMLElement>('[data-veil]')
 
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: {
-          trigger: stage,
-          start: 'top top',
-          end: '+=380%',
-          pin: true,
-          scrub: 0.7,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
-
-      tl.to(progressRef.current, { value: 1, duration: 1, ease: 'none' }, 0)
-
-      if (indicator) {
-        tl.to(indicator, { autoAlpha: 0, duration: 0.08 }, 0)
+      if (!name || lines.length < 3) {
+        frame = requestAnimationFrame(setup)
+        return
       }
 
-      if (name) {
+      if (reducedMotion) {
+        progressRef.current.value = 0
+        gsap.set(quote, { autoAlpha: 1 })
+        gsap.set(lines, { yPercent: 0, autoAlpha: 1 })
+        gsap.set(veil, { autoAlpha: 0 })
+        gsap.set(name, { clipPath: 'inset(0% 0% 0% 0%)', autoAlpha: 1 })
+        return
+      }
+
+      ctx = gsap.context(() => {
+        gsap.set(name, { clipPath: 'inset(0% 0% 0% 0%)', autoAlpha: 1 })
+        gsap.set(quote, { autoAlpha: 1 })
+        gsap.set(lines, { yPercent: 110, autoAlpha: 1 })
+        gsap.set(indicator, { autoAlpha: 1 })
+        gsap.set(veil, { autoAlpha: 0 })
+
+        const tl = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: stage,
+            start: 'top top',
+            end: '+=380%',
+            pin: true,
+            scrub: 0.75,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        })
+
+        tl.to(progressRef.current, { value: 1, duration: 1, ease: 'none' }, 0)
+
+        if (indicator) {
+          tl.to(indicator, { autoAlpha: 0, duration: 0.08 }, 0)
+        }
+
         tl.to(
           name,
           {
             clipPath: 'inset(0% 0% 100% 0%)',
-            y: -40,
             autoAlpha: 0,
-            duration: 0.15,
+            duration: 0.16,
             ease: 'power2.inOut',
           },
           0.15,
         )
-      }
 
-      quoteLines.forEach((line, i) => {
-        if (!line) return
         tl.to(
-          line,
+          lines,
           {
             yPercent: 0,
-            duration: 0.085,
+            duration: 0.1,
+            stagger: 0.045,
             ease: 'power3.out',
           },
-          0.68 + i * 0.055,
+          0.58,
         )
-      })
 
-      if (quote) {
-        tl.to(quote, { autoAlpha: 0, duration: 0.08, ease: 'power2.in' }, 0.9)
-      }
+        if (quote) {
+          tl.to(quote, { autoAlpha: 0, duration: 0.08, ease: 'power2.in' }, 0.9)
+        }
 
-      if (veil) {
-        tl.to(veil, { autoAlpha: 1, duration: 0.1, ease: 'power2.in' }, 0.9)
-      }
-    }, stage)
+        if (veil) {
+          tl.to(veil, { autoAlpha: 1, duration: 0.1, ease: 'power2.in' }, 0.9)
+        }
+      }, stage)
+    }
 
-    const onResize = () => ScrollTrigger.refresh()
-    window.addEventListener('resize', onResize)
-    void document.fonts?.ready.then(() => ScrollTrigger.refresh())
+    setup()
+
+    const refresh = () => ScrollTrigger.refresh()
+    window.addEventListener('resize', refresh)
+    void document.fonts?.ready.then(refresh)
 
     return () => {
-      window.removeEventListener('resize', onResize)
-      ctx.revert()
+      cancelled = true
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', refresh)
+      ctx?.revert()
     }
   }, [enabled, progressRef, reducedMotion, stageRef])
-
-  return domRef
 }

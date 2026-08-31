@@ -2,18 +2,19 @@ import { site } from '@/config/site'
 import styles from './QuoteStatement.module.css'
 
 type Props = {
-  rootRef?: (node: HTMLQuoteElement | null) => void
-  setLineRef?: (index: number, node: HTMLSpanElement | null) => void
   reducedMotion?: boolean
 }
 
-export function QuoteStatement({ rootRef, setLineRef, reducedMotion }: Props) {
+export function QuoteStatement({ reducedMotion }: Props) {
   return (
-    <blockquote className={`${styles.quote} ${reducedMotion ? styles.static : ''}`} ref={rootRef}>
+    <blockquote
+      className={`${styles.quote} ${reducedMotion ? styles.static : ''}`}
+      data-quote
+    >
       <p className={styles.lines}>
-        {site.quote.map((line, i) => (
+        {site.quote.map((line) => (
           <span className={styles.mask} key={line}>
-            <span className={styles.line} ref={(node) => setLineRef?.(i, node)}>
+            <span className={styles.line} data-quote-line>
               {line}
             </span>
           </span>

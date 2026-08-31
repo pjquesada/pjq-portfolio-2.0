@@ -262,9 +262,9 @@ export const TIMELINE = {
   scatter: { start: 0.25, end: 0.55 },
   heroTravel: { start: 0.45, end: 0.76 },
   quote: {
-    start: 0.68,
-    stagger: 0.055,
-    duration: 0.09,
+    start: 0.58,
+    stagger: 0.045,
+    duration: 0.1,
   },
   silence: { start: 0.82, end: 0.88 },
   handoff: { start: 0.88, end: 1 },

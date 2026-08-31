@@ -62,18 +62,18 @@ export const cameraByBreakpoint: Record<Breakpoint, CameraSequence> = {
   },
   mobile: {
     initial: {
-      position: [0, 6.8, 8.4],
-      lookAt: [0, 0.08, 0],
+      position: [0, 7.6, 9.0],
+      lookAt: [0, -0.35, 0],
       fov: 34,
     },
     pushed: {
-      position: [0, 5.6, 7.1],
-      lookAt: [0, 0.35, 0],
+      position: [0, 6.2, 7.6],
+      lookAt: [0, 0.15, 0],
       fov: 32,
     },
     statement: {
-      position: [0, 5.2, 6.4],
-      lookAt: [0, 0.95, 0],
+      position: [0, 5.6, 6.8],
+      lookAt: [0, 0.85, 0],
       fov: 33,
     },
     handoff: {

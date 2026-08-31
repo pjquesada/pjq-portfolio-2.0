@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { ExperienceProvider } from '@/landing/experienceContext'
 import { useBreakpoint } from '@/landing/hooks/useBreakpoint'
 import { usePointerParallax } from '@/landing/hooks/usePointerParallax'
@@ -22,7 +22,7 @@ export function LandingExperience() {
   const pointer = usePointerParallax(!reducedMotion && breakpoint === 'desktop')
   const stageRef = useRef<HTMLElement>(null)
 
-  const domRef = useLandingTimeline({
+  useLandingTimeline({
     stageRef,
     progressRef: progress,
     reducedMotion,
@@ -39,10 +39,6 @@ export function LandingExperience() {
     [breakpoint, pointer, reducedMotion],
   )
 
-  const setLineRef = useCallback((index: number, node: HTMLSpanElement | null) => {
-    domRef.current.quoteLines[index] = node
-  }, [domRef])
-
   return (
     <ExperienceProvider value={value}>
       <Loader />
@@ -53,30 +49,10 @@ export function LandingExperience() {
           aria-label="Landing"
         >
           <DominoScene />
-          <HeroTypography
-            reducedMotion={reducedMotion}
-            nameRef={(node) => {
-              domRef.current.name = node
-            }}
-          />
-          <QuoteStatement
-            reducedMotion={reducedMotion}
-            rootRef={(node) => {
-              domRef.current.quote = node
-            }}
-            setLineRef={setLineRef}
-          />
-          <ScrollIndicator
-            rootRef={(node) => {
-              domRef.current.indicator = node
-            }}
-          />
-          <div
-            className={styles.veil}
-            ref={(node) => {
-              domRef.current.veil = node
-            }}
-          />
+          <HeroTypography reducedMotion={reducedMotion} />
+          <QuoteStatement reducedMotion={reducedMotion} />
+          <ScrollIndicator />
+          <div className={styles.veil} data-veil />
         </section>
         <AboutSection />
       </main>

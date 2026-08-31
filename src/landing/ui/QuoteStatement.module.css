@@ -1,10 +1,10 @@
 .quote {
   position: absolute;
   z-index: 3;
-  right: clamp(6vw, 10vw, 12vw);
+  right: clamp(5vw, 9vw, 11vw);
   top: 50%;
   transform: translateY(-50%);
-  width: min(42vw, 28.5rem);
+  width: min(44vw, 30rem);
   margin: 0;
   pointer-events: none;
   color: var(--ivory);

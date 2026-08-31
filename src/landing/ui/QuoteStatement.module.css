@@ -1,6 +1,6 @@
 .quote {
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   right: clamp(5vw, 9vw, 11vw);
   top: 50%;
   transform: translateY(-50%);
@@ -29,7 +29,6 @@
 .line {
   display: block;
   transform: translate3d(0, 110%, 0);
-  will-change: transform;
 }
 
 .static .line {

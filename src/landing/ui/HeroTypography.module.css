@@ -1,0 +1,78 @@
+.hero {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: var(--ivory);
+}
+
+.metaLeft,
+.metaRight {
+  position: absolute;
+  top: clamp(1.25rem, 3.2vh, 2.4rem);
+  margin: 0;
+  font-size: clamp(0.62rem, 0.72vw, 0.74rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ivory-muted);
+}
+
+.metaLeft {
+  left: clamp(1.1rem, 3.2vw, 2.75rem);
+}
+
+.metaRight {
+  right: clamp(1.1rem, 3.2vw, 2.75rem);
+  text-align: right;
+}
+
+.nameWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4vw;
+}
+
+.name {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(3.4rem, 12.4vw, 11.25rem);
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+  clip-path: inset(0% 0% 0% 0%);
+  will-change: clip-path, opacity;
+}
+
+.line {
+  display: block;
+  white-space: nowrap;
+}
+
+.reduced .nameWrap {
+  align-items: flex-start;
+  padding-top: 22vh;
+}
+
+@media (max-width: 767px) {
+  .nameWrap {
+    align-items: flex-start;
+    padding-top: 16vh;
+  }
+
+  .name {
+    font-size: clamp(2.8rem, 16vw, 4.2rem);
+    letter-spacing: -0.05em;
+  }
+
+  .metaLeft,
+  .metaRight {
+    letter-spacing: 0.16em;
+  }
+}

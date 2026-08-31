@@ -1,0 +1,30 @@
+.stage {
+  position: relative;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.stage canvas {
+  display: block;
+}
+
+.reduced :global(.domino-canvas) {
+  pointer-events: none;
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: var(--black);
+  pointer-events: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil {
+    display: none;
+  }
+}

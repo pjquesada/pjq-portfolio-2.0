@@ -138,6 +138,7 @@ export function heroPose(
 
   const settlePos: Vec3Tuple = [worldX, worldY, vp.z]
   const travel = span(progress, settle.start, settle.end, settle.ease)
+  const spin = span(progress, settle.start, settle.end, settle.twirlEase ?? settle.ease)
 
   // 2π on X (plus a Y spin) so the reverse/logo is a mid-turn flash, then 9-9 returns.
   const spun: Vec3Tuple = [
@@ -147,7 +148,7 @@ export function heroPose(
   ]
 
   let position = lerpTuple(config.initial.position, settlePos, travel)
-  let rotation = lerpTuple(config.initial.rotation, spun, travel)
+  let rotation = lerpTuple(config.initial.rotation, spun, spin)
   let scale = lerp(config.initial.scale, settle.scale, travel)
 
   const hand = span(progress, handoff.start, handoff.end, 'power2.in')

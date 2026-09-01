@@ -39,6 +39,7 @@ export type DominoConfig = {
      * once at mid-turn, then returns to the double-nine face.
      */
     twirl: Vec3Tuple
+    twirlEase?: string
   }
   handoff?: {
     start: number
@@ -78,6 +79,7 @@ export const HERO_DOMINO: DominoConfig = {
     end: 0.82,
     ease: 'power4.out',
     twirl: [Math.PI * 2, Math.PI * 1.12, 0.4],
+    twirlEase: 'power2.out',
   },
   handoff: {
     start: 0.88,

@@ -29,21 +29,19 @@
 
 .mask {
   display: block;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
-  height: 1.45em;
-  clip-path: inset(100% 0 0 0);
 }
 
 .line {
   display: block;
-  height: 1.45em;
   line-height: 1.45;
   white-space: nowrap;
 }
 
 .static {
   opacity: 1;
+  transform: none;
 }
 
 .static .mask {

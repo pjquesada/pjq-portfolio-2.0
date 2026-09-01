@@ -48,15 +48,14 @@ export function useLandingTimeline({
         name.style.clipPath = `inset(0% 0% ${nameOut * 100}% 0%)`
         name.style.opacity = String(1 - nameOut)
 
-        masks.forEach((mask, i) => {
-          const start = 0.62 + i * 0.045
-          const t = span(progress, start, start + 0.11, 'power3.out')
-          mask.style.clipPath = `inset(${(1 - t) * 100}% 0 0 0)`
-        })
-
-        const quoteIn = span(progress, 0.58, 0.66, 'none')
+        const quoteIn = span(progress, 0.62, 0.76, 'power3.out')
         const quoteOut = span(progress, 0.9, 0.98, 'power2.in')
         quote.style.opacity = String(quoteIn * (1 - quoteOut))
+        quote.style.transform = `translate3d(0, ${(1 - quoteIn) * 1.15}rem, 0)`
+
+        masks.forEach((mask) => {
+          mask.style.clipPath = 'none'
+        })
 
         if (indicator) {
           indicator.style.opacity = String(1 - span(progress, 0, 0.08))
@@ -77,6 +76,7 @@ export function useLandingTimeline({
           mask.style.clipPath = 'none'
         })
         quote.style.opacity = '1'
+        quote.style.transform = 'none'
         if (veil) veil.style.opacity = '0'
         return
       }

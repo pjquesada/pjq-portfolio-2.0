@@ -115,13 +115,14 @@ function heroRotationKeys(initial: Vec3Tuple, settle: Vec3Tuple, twirl: Vec3Tupl
   const rest: Vec3Tuple = [settle[0] + twirl[0], settle[1] + twirl[1], settle[2] + twirl[2]]
   return [
     { at: 0, value: initial },
-    { at: 0.18, value: [initial[0] + 0.16, initial[1] + 0.28, initial[2] - 0.1] },
-    { at: 0.32, value: [0.95, 1.22, -0.4] },
-    { at: 0.42, value: [2.12, 2.18, 0.16] },
-    // Reverse / logo toward camera — brief pass, then keep turning.
-    { at: 0.48, value: [Math.PI * 0.98, 2.82, 0.46] },
-    { at: 0.56, value: [4.08, 3.62, 0.14] },
-    { at: 0.7, value: [rest[0] - 0.72, rest[1] - 0.62, rest[2] + 0.02], ease: 'power2.out' },
+    { at: 0.16, value: [initial[0] + 0.18, initial[1] + 0.3, initial[2] - 0.12] },
+    { at: 0.3, value: [1.05, 1.35, -0.36] },
+    { at: 0.4, value: [2.2, 2.2, 0.22] },
+    // Reverse / logo toward camera — brief pass only.
+    { at: 0.44, value: [Math.PI * 0.98, 2.7, 0.4] },
+    { at: 0.48, value: [4.55, 3.55, 0.16] },
+    { at: 0.53, value: [5.95, 4.7, 0.1], ease: 'power2.out' },
+    { at: 0.6, value: [rest[0] - 0.29, rest[1] - 0.43, rest[2] - 0.04], ease: 'power3.out' },
     { at: TIMELINE.heroTravel.end, value: rest, ease: 'power4.out' },
   ]
 }

@@ -57,9 +57,9 @@ export function HeroDomino() {
   return (
     <group ref={groupRef} name="HeroDomino" renderOrder={1}>
       <primitive object={cloned} />
-      {/* Reverse-face decal: visible as a brief reveal during the twirl, not on the pip face. */}
-      <mesh position={[0, 0.01, 0]} rotation={[Math.PI / 2, Math.PI, 0]} renderOrder={2}>
-        <planeGeometry args={[0.38, 0.5]} />
+      {/* Reverse-face decal: only the underside, occluded when the pip face is toward camera. */}
+      <mesh position={[0, 0.004, 0]} rotation={[Math.PI / 2, Math.PI, 0]}>
+        <planeGeometry args={[0.36, 0.48]} />
         <meshStandardMaterial
           map={texture}
           transparent
@@ -69,7 +69,7 @@ export function HeroDomino() {
           polygonOffset
           polygonOffsetFactor={-2}
           depthWrite={false}
-          side={THREE.DoubleSide}
+          side={THREE.FrontSide}
         />
       </mesh>
     </group>

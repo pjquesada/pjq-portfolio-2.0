@@ -13,15 +13,15 @@ export type Pose = {
 export type ViewportSize = { width: number; height: number }
 
 const heroViewport: Record<Breakpoint, { x: number; y: number; z: number }> = {
-  desktop: { x: 0.28, y: 0.5, z: 0.12 },
-  tablet: { x: 0.26, y: 0.5, z: 0.1 },
-  mobile: { x: 0.5, y: 0.3, z: 0.04 },
+  desktop: { x: 0.3, y: 0.5, z: 2.55 },
+  tablet: { x: 0.28, y: 0.5, z: 2.15 },
+  mobile: { x: 0.5, y: 0.3, z: 1.7 },
 }
 
 const heroSettleRotation: Record<Breakpoint, Vec3Tuple> = {
-  desktop: [0.34, -0.48, 0.05],
-  tablet: [0.3, -0.36, 0.04],
-  mobile: [0.48, 0.06, 0],
+  desktop: [0.52, -0.32, 0.04],
+  tablet: [0.48, -0.22, 0.03],
+  mobile: [0.62, 0.04, 0],
 }
 
 const heroHandoffRotation: Record<Breakpoint, Vec3Tuple> = {
@@ -124,23 +124,20 @@ export function heroPose(
   const settleRot = heroSettleRotation[breakpoint]
   const worldX = viewportToWorldX(
     vp.x,
-    0.18,
+    1.05,
     vp.z,
     cam.position,
     cam.lookAt,
     cam.fov,
     aspect,
   )
-  const worldY =
-    breakpoint === 'mobile'
-      ? viewportToWorldY(vp.y, cam.position, cam.lookAt, cam.fov, vp.z) * 0.55 + 0.55
-      : 0.08
+  const worldY = viewportToWorldY(vp.y, cam.position, cam.lookAt, cam.fov, vp.z)
 
   const settlePos: Vec3Tuple = [worldX, worldY, vp.z]
   const travel = span(progress, settle.start, settle.end, settle.ease)
   const spin = span(progress, settle.start, settle.end, settle.twirlEase ?? settle.ease)
 
-  // 2π on X (plus a Y spin) so the reverse/logo is a mid-turn flash, then 9-9 returns.
+  // Full turns return to the authored front (logo). No extra half-flip onto the pips.
   const spun: Vec3Tuple = [
     settleRot[0] + settle.twirl[0],
     settleRot[1] + settle.twirl[1],

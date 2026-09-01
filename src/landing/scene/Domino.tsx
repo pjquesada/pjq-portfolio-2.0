@@ -23,9 +23,10 @@ function applyMaterialQuality(root: THREE.Object3D) {
     const materials = Array.isArray(child.material) ? child.material : [child.material]
     for (const material of materials) {
       if (material instanceof THREE.MeshStandardMaterial) {
-        material.envMapIntensity = 0.22
-        material.metalness = Math.min(material.metalness, 0.06)
-        if (material.roughness < 0.38) material.roughness = 0.42
+        material.envMapIntensity = 0.1
+        material.metalness = Math.min(material.metalness, 0.02)
+        material.roughness = THREE.MathUtils.clamp(material.roughness * 1.12 + 0.1, 0.5, 0.78)
+        material.color.multiplyScalar(1.08)
         material.needsUpdate = true
       }
     }

@@ -9,22 +9,19 @@ export function SceneLighting() {
   return (
     <>
       <color attach="background" args={['#0c0b0a']} />
-      <fog attach="fog" args={['#0c0b0a', 18, 32]} />
-      <hemisphereLight args={['#f7f1e6', '#1c1814', mobile ? 0.62 : 0.7]} />
-      <ambientLight intensity={0.28} color="#f4ece0" />
-      <directionalLight
-        position={[5.8, 6.4, 6.2]}
-        intensity={mobile ? 1.15 : 1.35}
-        color="#fff6ea"
-      />
-      <directionalLight position={[-5.2, 3.6, 5.4]} intensity={0.48} color="#ece7df" />
-      <directionalLight position={[-2.2, 4.8, -3.6]} intensity={0.16} color="#f0e4d2" />
+      <fog attach="fog" args={['#0c0b0a', 20, 36]} />
+      <hemisphereLight args={['#f8f2e8', '#241e18', mobile ? 0.78 : 0.88]} />
+      <ambientLight intensity={0.38} color="#f5eee4" />
+      <directionalLight position={[6.2, 5.8, 7.4]} intensity={mobile ? 1.05 : 1.22} color="#fff7ee" />
+      <directionalLight position={[0.4, 2.8, 9.2]} intensity={0.62} color="#f6efe4" />
+      <directionalLight position={[-5.6, 3.2, 6.0]} intensity={0.5} color="#ebe6de" />
+      <directionalLight position={[-2.4, 5.2, -3.2]} intensity={0.14} color="#efe4d4" />
       {shadows ? (
         <ContactShadows
           position={[0, 0.001, 0]}
-          opacity={0.22}
+          opacity={0.16}
           scale={18}
-          blur={2.8}
+          blur={3.0}
           far={3.6}
           resolution={256}
           color="#000000"
@@ -32,9 +29,9 @@ export function SceneLighting() {
       ) : (
         <ContactShadows
           position={[0, 0.001, 0]}
-          opacity={0.14}
+          opacity={0.1}
           scale={14}
-          blur={3.6}
+          blur={3.8}
           far={2.8}
           resolution={128}
           color="#000000"

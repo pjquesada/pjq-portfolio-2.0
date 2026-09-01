@@ -28,8 +28,8 @@ export const cameraByBreakpoint: Record<Breakpoint, CameraSequence> = {
       fov: 26.5,
     },
     statement: {
-      position: [0.65, 2.45, 5.15],
-      lookAt: [-0.95, 1.05, 2.4],
+      position: [0.72, 2.15, 4.55],
+      lookAt: [-0.88, 1.12, 2.85],
       fov: 28,
     },
     handoff: {
@@ -50,8 +50,8 @@ export const cameraByBreakpoint: Record<Breakpoint, CameraSequence> = {
       fov: 30,
     },
     statement: {
-      position: [0.35, 2.7, 5.35],
-      lookAt: [-0.7, 1.0, 2.05],
+      position: [0.4, 2.35, 4.75],
+      lookAt: [-0.62, 1.08, 2.45],
       fov: 32,
     },
     handoff: {
@@ -72,8 +72,8 @@ export const cameraByBreakpoint: Record<Breakpoint, CameraSequence> = {
       fov: 32,
     },
     statement: {
-      position: [0, 3.35, 5.2],
-      lookAt: [0, 1.35, 1.55],
+      position: [0, 2.95, 4.55],
+      lookAt: [0, 1.4, 1.85],
       fov: 34,
     },
     handoff: {

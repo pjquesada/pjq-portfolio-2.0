@@ -70,10 +70,10 @@ export const HERO_DOMINO: DominoConfig = {
     ease: 'none',
   },
   settle: {
-    viewport: { x: 0.3, y: 0.5 },
-    worldZ: 2.55,
+    viewport: { x: 0.29, y: 0.5 },
+    worldZ: 3.05,
     rotation: [0.52, -0.32, 0.04],
-    scale: 1.18,
+    scale: 1.22,
     start: 0.44,
     end: 0.82,
     ease: 'power4.out',

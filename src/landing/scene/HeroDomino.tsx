@@ -12,6 +12,14 @@ useGLTF.preload(HERO_MODEL_URL)
 useTexture.preload(HERO_LOGO_URL)
 
 /**
+ * 9-9-domino.glb uses the opposite node Z rotation from the field pieces,
+ * so its pip face is authored toward the table. Flip it so the double-nine
+ * reads on top and the reverse logo can be revealed during the twirl.
+ */
+const FACE_CORRECTION: [number, number, number] = [Math.PI, 0, 0]
+const FACE_LIFT = 0.2
+
+/**
  * Dedicated double-nine protagonist. Always loads 9-9-domino.glb and is
  * animated on its own timeline — never mixed into the scatter field.
  */
@@ -55,9 +63,11 @@ export function HeroDomino() {
   })
 
   return (
-    <group ref={groupRef} name="HeroDomino" renderOrder={1}>
-      <primitive object={cloned} />
-      {/* Reverse-face decal: only the underside, occluded when the pip face is toward camera. */}
+    <group ref={groupRef} name="HeroDomino">
+      <group position={[0, FACE_LIFT, 0]} rotation={FACE_CORRECTION}>
+        <primitive object={cloned} />
+      </group>
+      {/* Reverse-face decal: underside only, occluded when pips face the camera. */}
       <mesh position={[0, 0.004, 0]} rotation={[Math.PI / 2, Math.PI, 0]}>
         <planeGeometry args={[0.36, 0.48]} />
         <meshStandardMaterial

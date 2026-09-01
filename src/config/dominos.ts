@@ -100,7 +100,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
       scale: 1,
     },
     scatter: {
-      position: [-8.8, 0.9, -2.2],
+      position: [-11.2, 1.1, -2.8],
       rotation: [-2.1, -0.8, 1.35],
       start: 0.16,
       end: 0.42,

@@ -32,11 +32,11 @@ export function useLandingTimeline({
 
       const name = stage.querySelector<HTMLElement>('[data-hero-name]')
       const quote = stage.querySelector<HTMLElement>('[data-quote]')
-      const lines = gsap.utils.toArray<HTMLElement>('[data-quote-line]', stage)
+      const masks = gsap.utils.toArray<HTMLElement>('[data-quote-mask]', stage)
       const indicator = stage.querySelector<HTMLElement>('[data-scroll-indicator]')
       const veil = stage.querySelector<HTMLElement>('[data-veil]')
 
-      if (!name || !quote || lines.length < 3) {
+      if (!name || !quote || masks.length < 3) {
         frame = requestAnimationFrame(setup)
         return
       }
@@ -48,10 +48,10 @@ export function useLandingTimeline({
         name.style.clipPath = `inset(0% 0% ${nameOut * 100}% 0%)`
         name.style.opacity = String(1 - nameOut)
 
-        lines.forEach((line, i) => {
+        masks.forEach((mask, i) => {
           const start = 0.62 + i * 0.045
           const t = span(progress, start, start + 0.11, 'power3.out')
-          line.style.transform = `translate3d(0, ${(1 - t) * 110}%, 0)`
+          mask.style.clipPath = `inset(${(1 - t) * 100}% 0 0 0)`
         })
 
         const quoteIn = span(progress, 0.58, 0.66, 'none')
@@ -73,8 +73,8 @@ export function useLandingTimeline({
         apply(0)
         name.style.clipPath = 'inset(0% 0% 0% 0%)'
         name.style.opacity = '1'
-        lines.forEach((line) => {
-          line.style.transform = 'none'
+        masks.forEach((mask) => {
+          mask.style.clipPath = 'none'
         })
         quote.style.opacity = '1'
         if (veil) veil.style.opacity = '0'

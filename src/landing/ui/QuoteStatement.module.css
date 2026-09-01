@@ -1,11 +1,13 @@
 .quote {
   position: absolute;
   z-index: 5;
+  top: 0;
+  bottom: 0;
   right: clamp(6vw, 8vw, 10vw);
-  top: 50%;
-  transform: translateY(-50%);
   width: min(38vw, 26rem);
   margin: 0;
+  display: flex;
+  align-items: center;
   pointer-events: none;
   color: var(--ivory);
   opacity: 0;
@@ -13,6 +15,7 @@
 
 .lines {
   margin: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -29,7 +32,7 @@
   overflow: hidden;
   position: relative;
   height: 1.45em;
-  isolation: isolate;
+  clip-path: inset(100% 0 0 0);
 }
 
 .line {
@@ -37,16 +40,14 @@
   height: 1.45em;
   line-height: 1.45;
   white-space: nowrap;
-  transform: translate3d(0, 110%, 0);
-  will-change: transform;
 }
 
 .static {
   opacity: 1;
 }
 
-.static .line {
-  transform: none;
+.static .mask {
+  clip-path: none;
 }
 
 @media (max-width: 1099px) {
@@ -63,7 +64,7 @@
     top: auto;
     bottom: 11vh;
     width: auto;
-    transform: none;
+    display: block;
   }
 
   .lines {

@@ -13,7 +13,7 @@ export function QuoteStatement({ reducedMotion }: Props) {
     >
       <p className={styles.lines}>
         {site.quote.map((line) => (
-          <span className={styles.mask} key={line}>
+          <span className={styles.mask} key={line} data-quote-mask>
             <span className={styles.line} data-quote-line>
               {line}
             </span>

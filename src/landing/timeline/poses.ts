@@ -97,10 +97,11 @@ export function viewportToWorldY(
 
 export function peripheralPose(config: DominoConfig, progress: number): Pose {
   const t = span(progress, config.scatter.start, config.scatter.end, config.scatter.ease)
+  const hide = span(progress, 0.48, 0.62, 'power2.in')
   return {
     position: lerpTuple(config.initial.position, config.scatter.position, t),
     rotation: lerpTuple(config.initial.rotation, config.scatter.rotation, t),
-    scale: config.initial.scale,
+    scale: lerp(config.initial.scale, 0, hide),
   }
 }
 

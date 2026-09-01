@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { cameraParallax } from '@/config/camera'
 import { useExperience } from '@/landing/experienceContext'
-import { cameraPoseAt } from '@/landing/timeline/poses'
+import { cameraPoseAt, statementCalm } from '@/landing/timeline/poses'
 
 const look = new THREE.Vector3()
 const desired = new THREE.Vector3()
@@ -32,12 +32,13 @@ export function CameraRig() {
     const tProgress = reducedMotion ? 0 : progress.current.value
     const pose = cameraPoseAt(tProgress, breakpoint)
     const amount = cameraParallax[breakpoint]
-    const handoff = Math.max(0, (tProgress - 0.88) / 0.12)
-    const damp = 1 - Math.exp(-delta * 2.6)
+    const handoff = Math.max(0, (tProgress - 0.9) / 0.1)
+    const calm = statementCalm(tProgress)
+    const damp = 1 - Math.exp(-delta * (2.6 + calm * 2.2))
 
     parallax.set(
-      pointer.current.x * amount.x * (1 - handoff),
-      -pointer.current.y * amount.y * (1 - handoff),
+      pointer.current.x * amount.x * (1 - handoff) * (1 - calm * 0.92),
+      -pointer.current.y * amount.y * (1 - handoff) * (1 - calm * 0.92),
       0,
     )
 

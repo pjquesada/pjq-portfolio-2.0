@@ -1,8 +1,7 @@
 import type { Breakpoint, CameraPose, CameraSequence } from '@/config/camera'
 import { cameraByBreakpoint } from '@/config/camera'
-import type { DominoConfig, Vec3Tuple } from '@/config/dominos'
-import { TIMELINE } from '@/config/dominos'
-import { lerp, lerpTuple, span } from './math'
+import { HERO_CONFIG, TIMELINE, type DominoConfig, type Vec3Tuple } from '@/config/dominos'
+import { lerp, lerpTuple, sampleKeyedScalar, sampleKeyedTuple, span, type TupleKey } from './math'
 
 export type Pose = {
   position: Vec3Tuple
@@ -12,16 +11,18 @@ export type Pose = {
 
 export type ViewportSize = { width: number; height: number }
 
+const TAU = Math.PI * 2
+
 const heroViewport: Record<Breakpoint, { x: number; y: number; z: number }> = {
-  desktop: { x: 0.28, y: 0.5, z: 0.12 },
-  tablet: { x: 0.26, y: 0.5, z: 0.1 },
-  mobile: { x: 0.5, y: 0.3, z: 0.04 },
+  desktop: { x: 0.3, y: 0.5, z: 0.1 },
+  tablet: { x: 0.28, y: 0.5, z: 0.08 },
+  mobile: { x: 0.5, y: 0.32, z: 0.04 },
 }
 
 const heroSettleRotation: Record<Breakpoint, Vec3Tuple> = {
-  desktop: [0.42, -0.52, 0.08],
-  tablet: [0.36, -0.38, 0.06],
-  mobile: [0.58, 0.06, 0],
+  desktop: [0.36, -0.5, 0.06],
+  tablet: [0.32, -0.36, 0.05],
+  mobile: [0.52, 0.04, 0],
 }
 
 const heroHandoffRotation: Record<Breakpoint, Vec3Tuple> = {
@@ -33,7 +34,7 @@ const heroHandoffRotation: Record<Breakpoint, Vec3Tuple> = {
 export function cameraPoseAt(progress: number, breakpoint: Breakpoint): CameraPose {
   const seq: CameraSequence = cameraByBreakpoint[breakpoint]
   const push = span(progress, TIMELINE.cameraPush.start, TIMELINE.cameraPush.end, 'power2.inOut')
-  const toStatement = span(progress, 0.45, 0.78, 'power3.out')
+  const toStatement = span(progress, TIMELINE.heroTravel.start, TIMELINE.heroTravel.end, 'power3.out')
   const handoff = span(progress, TIMELINE.handoff.start, TIMELINE.handoff.end, 'power2.in')
 
   const afterPush: CameraPose = {
@@ -103,14 +104,36 @@ export function peripheralPose(config: DominoConfig, progress: number): Pose {
   }
 }
 
+/**
+ * Independent hero timeline.
+ *
+ * Rotation is keyed in global scroll progress so the reverse (logo) is a
+ * brief pass-through around ~π on X, then the double-nine face returns
+ * as the animation strongly decelerates into the statement pose.
+ */
+function heroRotationKeys(initial: Vec3Tuple, settle: Vec3Tuple, twirl: Vec3Tuple): TupleKey[] {
+  const rest: Vec3Tuple = [settle[0] + twirl[0], settle[1] + twirl[1], settle[2] + twirl[2]]
+  return [
+    { at: 0, value: initial },
+    { at: 0.18, value: [initial[0] + 0.16, initial[1] + 0.28, initial[2] - 0.1] },
+    { at: 0.32, value: [0.95, 1.22, -0.4] },
+    { at: 0.42, value: [2.12, 2.18, 0.16] },
+    // Reverse / logo toward camera — brief pass, then keep turning.
+    { at: 0.48, value: [Math.PI * 0.98, 2.82, 0.46] },
+    { at: 0.56, value: [4.08, 3.62, 0.14] },
+    { at: 0.7, value: [rest[0] - 0.72, rest[1] - 0.62, rest[2] + 0.02], ease: 'power2.out' },
+    { at: TIMELINE.heroTravel.end, value: rest, ease: 'power4.out' },
+  ]
+}
+
 export function heroPose(
   config: DominoConfig,
   progress: number,
   breakpoint: Breakpoint,
   aspect: number,
 ): Pose {
-  const settle = config.settle
-  const handoff = config.handoff
+  const settle = config.settle ?? HERO_CONFIG.settle
+  const handoff = config.handoff ?? HERO_CONFIG.handoff
   if (!settle || !handoff) {
     return {
       position: config.initial.position,
@@ -119,35 +142,39 @@ export function heroPose(
     }
   }
 
-  const cam = cameraPoseAt(Math.min(progress, settle.end), breakpoint)
   const vp = heroViewport[breakpoint]
   const settleRot = heroSettleRotation[breakpoint]
-  const worldX = viewportToWorldX(
-    vp.x,
-    0.18,
-    vp.z,
-    cam.position,
-    cam.lookAt,
-    cam.fov,
-    aspect,
-  )
+  const travel = span(progress, settle.start, settle.end, settle.ease)
+  const cam = cameraPoseAt(Math.min(progress, settle.end), breakpoint)
+  const worldX = viewportToWorldX(vp.x, 0.16, vp.z, cam.position, cam.lookAt, cam.fov, aspect)
   const worldY =
     breakpoint === 'mobile'
       ? viewportToWorldY(vp.y, cam.position, cam.lookAt, cam.fov, vp.z) * 0.55 + 0.55
-      : 0.08
+      : 0.1
 
   const settlePos: Vec3Tuple = [worldX, worldY, vp.z]
-  const travel = span(progress, settle.start, settle.end, settle.ease)
+  const lift = Math.sin(Math.min(travel, 1) * Math.PI) * (breakpoint === 'mobile' ? 0.28 : 0.48)
 
-  const spun: Vec3Tuple = [
-    settleRot[0] + settle.twirl[0],
-    settleRot[1] + settle.twirl[1],
-    settleRot[2] + settle.twirl[2],
+  const startPos = config.initial.position
+  let position: Vec3Tuple = [
+    lerp(startPos[0], settlePos[0], travel),
+    lerp(startPos[1], settlePos[1], travel) + lift,
+    lerp(startPos[2], settlePos[2], travel),
   ]
 
-  let position = lerpTuple(config.initial.position, settlePos, travel)
-  let rotation = lerpTuple(config.initial.rotation, spun, travel)
-  let scale = lerp(config.initial.scale, settle.scale, travel)
+  const rotation = sampleKeyedTuple(
+    heroRotationKeys(config.initial.rotation, settleRot, settle.twirl),
+    progress,
+  )
+
+  let scale = sampleKeyedScalar(
+    [
+      { at: 0, value: config.initial.scale },
+      { at: settle.start, value: config.initial.scale },
+      { at: settle.end, value: settle.scale, ease: 'power3.out' },
+    ],
+    progress,
+  )
 
   const hand = span(progress, handoff.start, handoff.end, 'power2.in')
   if (hand > 0) {
@@ -158,7 +185,14 @@ export function heroPose(
       lerp(camNow.position[2], camNow.lookAt[2], 0.42),
     ]
     position = lerpTuple(position, toward, hand)
-    rotation = lerpTuple(rotation, heroHandoffRotation[breakpoint], hand)
+    const rest: Vec3Tuple = [
+      settleRot[0] + settle.twirl[0],
+      settleRot[1] + settle.twirl[1],
+      settleRot[2] + settle.twirl[2],
+    ]
+    rotation[0] = lerp(rest[0], heroHandoffRotation[breakpoint][0] + TAU, hand)
+    rotation[1] = lerp(rest[1], heroHandoffRotation[breakpoint][1] + TAU, hand)
+    rotation[2] = lerp(rest[2], heroHandoffRotation[breakpoint][2], hand)
     scale = lerp(scale, handoff.scale, hand)
   }
 
@@ -190,4 +224,8 @@ export function veilProgress(progress: number) {
 
 export function indicatorProgress(progress: number) {
   return 1 - span(progress, TIMELINE.indicatorFade.start, TIMELINE.indicatorFade.end, 'none')
+}
+
+export function statementCalm(progress: number) {
+  return span(progress, TIMELINE.silence.start - 0.08, TIMELINE.silence.start, 'power2.out')
 }

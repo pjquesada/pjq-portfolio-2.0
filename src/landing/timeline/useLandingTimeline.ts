@@ -1,6 +1,7 @@
 import { useEffect, type MutableRefObject, type RefObject } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { TIMELINE } from '@/config/dominos'
 import { span } from './math'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -44,25 +45,32 @@ export function useLandingTimeline({
       const apply = (progress: number) => {
         progressRef.current.value = progress
 
-        const nameOut = span(progress, 0.15, 0.3, 'power2.inOut')
+        const nameOut = span(
+          progress,
+          TIMELINE.nameLeave.start,
+          TIMELINE.nameLeave.end,
+          'power2.inOut',
+        )
         name.style.clipPath = `inset(0% 0% ${nameOut * 100}% 0%)`
         name.style.opacity = String(1 - nameOut)
 
         lines.forEach((line, i) => {
-          const start = 0.58 + i * 0.045
-          const t = span(progress, start, start + 0.11, 'power3.out')
+          const start = TIMELINE.quote.start + i * TIMELINE.quote.stagger
+          const t = span(progress, start, start + TIMELINE.quote.duration, 'power3.out')
           line.style.transform = `translate3d(0, ${(1 - t) * 110}%, 0)`
         })
 
-        const quoteOut = span(progress, 0.9, 0.98, 'power2.in')
+        const quoteOut = span(progress, TIMELINE.handoff.start, 0.98, 'power2.in')
         quote.style.opacity = String(1 - quoteOut)
 
         if (indicator) {
-          indicator.style.opacity = String(1 - span(progress, 0, 0.08))
+          indicator.style.opacity = String(
+            1 - span(progress, TIMELINE.indicatorFade.start, TIMELINE.indicatorFade.end),
+          )
         }
 
         if (veil) {
-          const v = span(progress, 0.9, 1, 'power2.in')
+          const v = span(progress, TIMELINE.handoff.start, TIMELINE.handoff.end, 'power2.in')
           veil.style.opacity = String(v)
           veil.style.visibility = v > 0.001 ? 'visible' : 'hidden'
         }

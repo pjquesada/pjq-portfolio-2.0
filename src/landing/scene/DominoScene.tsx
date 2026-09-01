@@ -41,13 +41,10 @@ export function DominoScene() {
     >
       <SceneLighting />
       <CameraRig />
-      {pieces.map((config) =>
-        config.hero ? (
-          <HeroDomino key={config.id} config={config} />
-        ) : (
-          <Domino key={config.id} config={config} />
-        ),
-      )}
+      <HeroDomino />
+      {pieces.map((config) => (
+        <Domino key={config.id} config={config} />
+      ))}
     </Canvas>
   )
 }

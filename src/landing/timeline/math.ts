@@ -1,4 +1,5 @@
 import gsap from 'gsap'
+import type { Vec3Tuple } from '@/config/camera'
 
 export function clamp01(value: number) {
   return value < 0 ? 0 : value > 1 ? 1 : value
@@ -26,4 +27,37 @@ export function span(
   if (end <= start) return progress >= end ? 1 : 0
   const t = clamp01((progress - start) / (end - start))
   return gsap.parseEase(ease)(t)
+}
+
+export type ScalarKey = { at: number; value: number; ease?: string }
+export type TupleKey = { at: number; value: Vec3Tuple; ease?: string }
+
+function localT(progress: number, from: number, to: number, ease?: string) {
+  if (to <= from) return progress >= to ? 1 : 0
+  const t = clamp01((progress - from) / (to - from))
+  return ease ? gsap.parseEase(ease)(t) : t
+}
+
+export function sampleKeyedScalar(keys: readonly ScalarKey[], progress: number) {
+  if (progress <= keys[0].at) return keys[0].value
+  for (let i = 1; i < keys.length; i++) {
+    if (progress <= keys[i].at) {
+      const a = keys[i - 1]
+      const b = keys[i]
+      return lerp(a.value, b.value, localT(progress, a.at, b.at, b.ease))
+    }
+  }
+  return keys[keys.length - 1].value
+}
+
+export function sampleKeyedTuple(keys: readonly TupleKey[], progress: number): Vec3Tuple {
+  if (progress <= keys[0].at) return keys[0].value
+  for (let i = 1; i < keys.length; i++) {
+    if (progress <= keys[i].at) {
+      const a = keys[i - 1]
+      const b = keys[i]
+      return lerpTuple(a.value, b.value, localT(progress, a.at, b.at, b.ease))
+    }
+  }
+  return keys[keys.length - 1].value
 }

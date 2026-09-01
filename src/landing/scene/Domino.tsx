@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef, type ReactNode } from 'react'
+import { memo, useMemo, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -6,33 +6,15 @@ import { ALL_MODEL_URLS } from '@/config/models'
 import type { DominoConfig } from '@/config/dominos'
 import { useExperience } from '@/landing/experienceContext'
 import { poseFor } from '@/landing/timeline/poses'
+import { applyMaterialQuality } from './materials'
 
 ALL_MODEL_URLS.forEach((url) => useGLTF.preload(url))
 
 type Props = {
   config: DominoConfig
-  children?: ReactNode
 }
 
-function applyMaterialQuality(root: THREE.Object3D) {
-  root.traverse((child) => {
-    if (!(child instanceof THREE.Mesh)) return
-    child.castShadow = false
-    child.receiveShadow = false
-    child.frustumCulled = true
-    const materials = Array.isArray(child.material) ? child.material : [child.material]
-    for (const material of materials) {
-      if (material instanceof THREE.MeshStandardMaterial) {
-        material.envMapIntensity = 0.22
-        material.metalness = Math.min(material.metalness, 0.06)
-        if (material.roughness < 0.38) material.roughness = 0.42
-        material.needsUpdate = true
-      }
-    }
-  })
-}
-
-export const Domino = memo(function Domino({ config, children }: Props) {
+export const Domino = memo(function Domino({ config }: Props) {
   const gltf = useGLTF(config.model)
   const { progress, breakpoint, reducedMotion } = useExperience()
   const groupRef = useRef<THREE.Group>(null)
@@ -65,7 +47,6 @@ export const Domino = memo(function Domino({ config, children }: Props) {
   return (
     <group ref={groupRef}>
       <primitive object={cloned} />
-      {children}
     </group>
   )
 })

@@ -49,7 +49,7 @@ export function useLandingTimeline({
         name.style.opacity = String(1 - nameOut)
 
         lines.forEach((line, i) => {
-          const start = 0.58 + i * 0.045
+          const start = 0.62 + i * 0.045
           const t = span(progress, start, start + 0.11, 'power3.out')
           line.style.transform = `translate3d(0, ${(1 - t) * 110}%, 0)`
         })

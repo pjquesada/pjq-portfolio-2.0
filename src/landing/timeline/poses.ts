@@ -19,9 +19,9 @@ const heroViewport: Record<Breakpoint, { x: number; y: number; z: number }> = {
 }
 
 const heroSettleRotation: Record<Breakpoint, Vec3Tuple> = {
-  desktop: [0.42, -0.52, 0.08],
-  tablet: [0.36, -0.38, 0.06],
-  mobile: [0.58, 0.06, 0],
+  desktop: [0.34, -0.48, 0.05],
+  tablet: [0.3, -0.36, 0.04],
+  mobile: [0.48, 0.06, 0],
 }
 
 const heroHandoffRotation: Record<Breakpoint, Vec3Tuple> = {
@@ -139,6 +139,7 @@ export function heroPose(
   const settlePos: Vec3Tuple = [worldX, worldY, vp.z]
   const travel = span(progress, settle.start, settle.end, settle.ease)
 
+  // 2π on X (plus a Y spin) so the reverse/logo is a mid-turn flash, then 9-9 returns.
   const spun: Vec3Tuple = [
     settleRot[0] + settle.twirl[0],
     settleRot[1] + settle.twirl[1],

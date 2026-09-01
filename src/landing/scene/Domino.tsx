@@ -53,7 +53,7 @@ export const Domino = memo(function Domino({ config, children }: Props) {
     group.rotation.set(...pose.rotation)
     group.scale.setScalar(pose.scale)
 
-    if (!reducedMotion && t < 0.14) {
+    if (!reducedMotion && t < 0.14 && !config.hero) {
       const seed = config.id.length * 0.7
       const fade = 1 - t / 0.14
       const settle = Math.exp(-state.clock.elapsedTime * 1.4)
@@ -62,9 +62,13 @@ export const Domino = memo(function Domino({ config, children }: Props) {
     }
   })
 
+  const meshRotation = config.meshRotation ?? ([0, 0, 0] as const)
+
   return (
     <group ref={groupRef}>
-      <primitive object={cloned} />
+      <group rotation={meshRotation}>
+        <primitive object={cloned} />
+      </group>
       {children}
     </group>
   )

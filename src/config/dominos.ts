@@ -1,4 +1,4 @@
-import { HERO_LOGO_URL, MODEL_URLS } from './models'
+import { MODEL_URLS } from './models'
 import type { Breakpoint, Vec3Tuple } from './camera'
 
 export type { Breakpoint, Vec3Tuple }
@@ -7,7 +7,11 @@ export type DominoConfig = {
   id: string
   model: string
   hero?: boolean
-  logo?: string
+  /**
+   * Extra Euler rotation applied to the GLB so a specific face sits up.
+   * 9-9 is exported with the opposite Z spin from the other tiles.
+   */
+  meshRotation?: Vec3Tuple
   breakpoints: Breakpoint[]
   initial: {
     position: Vec3Tuple
@@ -30,7 +34,10 @@ export type DominoConfig = {
     start: number
     end: number
     ease: string
-    /** Extra radians added during travel so the piece completes full turns, then stops on `rotation`. */
+    /**
+     * Extra radians added during travel. A 2π X spin exposes the reverse (logo)
+     * once at mid-turn, then returns to the double-nine face.
+     */
     twirl: Vec3Tuple
   }
   handoff?: {
@@ -42,51 +49,56 @@ export type DominoConfig = {
 }
 
 /**
+ * Double-nine is the only hero. Never add MODEL_URLS.d99 to scatter pieces.
+ */
+export const HERO_DOMINO: DominoConfig = {
+  id: 'hero-99',
+  model: MODEL_URLS.d99,
+  hero: true,
+  meshRotation: [Math.PI, 0, 0],
+  breakpoints: ['mobile', 'tablet', 'desktop'],
+  initial: {
+    position: [0.02, 0, 0.04],
+    rotation: [0.0, 0.08, 0.015],
+    scale: 1.05,
+  },
+  scatter: {
+    position: [0.02, 0, 0.04],
+    rotation: [0.0, 0.08, 0.015],
+    start: 1,
+    end: 1,
+    ease: 'none',
+  },
+  settle: {
+    viewport: { x: 0.28, y: 0.5 },
+    worldZ: 0.1,
+    rotation: [0.34, -0.48, 0.05],
+    scale: 1.1,
+    start: 0.44,
+    end: 0.82,
+    ease: 'power4.out',
+    twirl: [Math.PI * 2, Math.PI * 1.12, 0.4],
+  },
+  handoff: {
+    start: 0.88,
+    end: 1,
+    scale: 4.6,
+    rotation: [1.12, -0.18, 0.28],
+  },
+}
+
+/**
  * Art-directed tabletop layout. World units, Y-up.
  * Tweak these values to restage the opening — do not scatter magic numbers in components.
+ * 9-9-domino.glb is reserved for HERO_DOMINO.
  */
-export const DOMINO_CONFIG: DominoConfig[] = [
-  {
-    id: 'hero',
-    model: MODEL_URLS.d77,
-    hero: true,
-    logo: HERO_LOGO_URL,
-    breakpoints: ['mobile', 'tablet', 'desktop'],
-    initial: {
-      position: [0.04, 0, 0.06],
-      rotation: [0.0, 0.1, 0.02],
-      scale: 1.08,
-    },
-    scatter: {
-      position: [0.04, 0, 0.06],
-      rotation: [0.0, 0.1, 0.02],
-      start: 1,
-      end: 1,
-      ease: 'none',
-    },
-    settle: {
-      viewport: { x: 0.28, y: 0.5 },
-      worldZ: 0.12,
-      rotation: [0.42, -0.52, 0.08],
-      scale: 1.16,
-      start: 0.45,
-      end: 0.76,
-      ease: 'power3.out',
-      twirl: [0.55, Math.PI * 2.08, 0.48],
-    },
-    handoff: {
-      start: 0.88,
-      end: 1,
-      scale: 4.6,
-      rotation: [1.15, -0.2, 0.35],
-    },
-  },
+export const SCATTER_DOMINOES: DominoConfig[] = [
   {
     id: 'stand-far-left',
-    model: MODEL_URLS.d99,
+    model: MODEL_URLS.d77,
     breakpoints: ['tablet', 'desktop'],
     initial: {
-      position: [-3.62, 0.02, 0.18],
+      position: [-3.72, 0.02, 0.22],
       rotation: [-1.18, 0.12, -0.08],
       scale: 1,
     },
@@ -103,7 +115,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d10,
     breakpoints: ['mobile', 'tablet', 'desktop'],
     initial: {
-      position: [-2.48, 0, 0.32],
+      position: [-2.62, 0, 0.38],
       rotation: [0.04, -0.22, 0.03],
       scale: 0.98,
     },
@@ -120,7 +132,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d67,
     breakpoints: ['desktop'],
     initial: {
-      position: [-1.72, 0, -0.92],
+      position: [-1.92, 0, -0.98],
       rotation: [0.08, 0.46, -0.04],
       scale: 0.94,
     },
@@ -137,7 +149,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d21,
     breakpoints: ['mobile', 'tablet', 'desktop'],
     initial: {
-      position: [-1.18, 0, 0.2],
+      position: [-1.58, 0, 0.28],
       rotation: [0.03, 0.16, -0.02],
       scale: 1,
     },
@@ -154,7 +166,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d67,
     breakpoints: ['desktop'],
     initial: {
-      position: [-0.82, 0, 1.08],
+      position: [-1.28, 0, 1.22],
       rotation: [-0.18, 0.22, 0.06],
       scale: 0.92,
     },
@@ -171,7 +183,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d92,
     breakpoints: ['mobile', 'tablet', 'desktop'],
     initial: {
-      position: [1.12, 0, 0.26],
+      position: [1.58, 0, 0.3],
       rotation: [0.05, -0.18, 0.04],
       scale: 1.02,
     },
@@ -188,7 +200,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d96,
     breakpoints: ['mobile', 'tablet', 'desktop'],
     initial: {
-      position: [1.92, 0, -0.18],
+      position: [2.12, 0, -0.22],
       rotation: [-0.06, 0.14, -0.03],
       scale: 0.97,
     },
@@ -202,10 +214,10 @@ export const DOMINO_CONFIG: DominoConfig[] = [
   },
   {
     id: 'lie-right',
-    model: MODEL_URLS.d99,
+    model: MODEL_URLS.d77,
     breakpoints: ['tablet', 'desktop'],
     initial: {
-      position: [2.7, 0, 0.4],
+      position: [2.88, 0, 0.42],
       rotation: [0.02, -0.08, 0.05],
       scale: 1,
     },
@@ -222,7 +234,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d21,
     breakpoints: ['desktop'],
     initial: {
-      position: [3.55, 0.01, -0.38],
+      position: [3.68, 0.01, -0.42],
       rotation: [-0.42, 0.58, -0.12],
       scale: 0.96,
     },
@@ -239,7 +251,7 @@ export const DOMINO_CONFIG: DominoConfig[] = [
     model: MODEL_URLS.d10,
     breakpoints: ['desktop'],
     initial: {
-      position: [2.08, 0, -1.12],
+      position: [2.22, 0, -1.18],
       rotation: [0.1, -0.34, 0.02],
       scale: 0.93,
     },
@@ -253,16 +265,22 @@ export const DOMINO_CONFIG: DominoConfig[] = [
   },
 ]
 
-export const HERO_CONFIG = DOMINO_CONFIG.find((d) => d.hero)!
+if (SCATTER_DOMINOES.some((piece) => piece.model === MODEL_URLS.d99)) {
+  throw new Error('9-9-domino.glb is reserved for HeroDomino and must not appear in scatter.')
+}
+
+export const DOMINO_CONFIG: DominoConfig[] = [HERO_DOMINO, ...SCATTER_DOMINOES]
+
+export const HERO_CONFIG = HERO_DOMINO
 
 export const TIMELINE = {
   holdEnd: 0.15,
   cameraPush: { start: 0.15, end: 0.32 },
   nameLeave: { start: 0.15, end: 0.3 },
   scatter: { start: 0.25, end: 0.55 },
-  heroTravel: { start: 0.45, end: 0.76 },
+  heroTravel: { start: 0.44, end: 0.82 },
   quote: {
-    start: 0.58,
+    start: 0.62,
     stagger: 0.045,
     duration: 0.1,
   },
@@ -271,6 +289,10 @@ export const TIMELINE = {
   indicatorFade: { start: 0, end: 0.08 },
 } as const
 
+export function scatterForBreakpoint(breakpoint: Breakpoint) {
+  return SCATTER_DOMINOES.filter((d) => d.breakpoints.includes(breakpoint))
+}
+
 export function configsForBreakpoint(breakpoint: Breakpoint) {
-  return DOMINO_CONFIG.filter((d) => d.breakpoints.includes(breakpoint))
+  return [HERO_DOMINO, ...scatterForBreakpoint(breakpoint)]
 }

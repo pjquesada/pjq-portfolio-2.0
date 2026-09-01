@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { configsForBreakpoint } from '@/config/dominos'
+import { scatterForBreakpoint } from '@/config/dominos'
 import { cameraByBreakpoint } from '@/config/camera'
 import { useExperience } from '@/landing/experienceContext'
 import { CameraRig } from './CameraRig'
@@ -10,7 +10,7 @@ import { SceneLighting } from './SceneLighting'
 
 export function DominoScene() {
   const { breakpoint, reducedMotion } = useExperience()
-  const pieces = configsForBreakpoint(breakpoint)
+  const scatter = scatterForBreakpoint(breakpoint)
   const initial = cameraByBreakpoint[breakpoint].initial
   const dprMax = breakpoint === 'mobile' ? 1.25 : 1.6
 
@@ -41,13 +41,10 @@ export function DominoScene() {
     >
       <SceneLighting />
       <CameraRig />
-      {pieces.map((config) =>
-        config.hero ? (
-          <HeroDomino key={config.id} config={config} />
-        ) : (
-          <Domino key={config.id} config={config} />
-        ),
-      )}
+      <HeroDomino />
+      {scatter.map((config) => (
+        <Domino key={config.id} config={config} />
+      ))}
     </Canvas>
   )
 }

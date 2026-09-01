@@ -42,12 +42,25 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
   font-weight: 700;
   font-size: clamp(3.4rem, 12.4vw, 11.25rem);
   line-height: 0.84;
   letter-spacing: -0.055em;
   clip-path: inset(0% 0% 0% 0%);
   will-change: clip-path, opacity;
+  text-shadow: 0 0 1.6em rgba(12, 11, 10, 0.7);
+}
+
+.name::before {
+  content: '';
+  position: absolute;
+  inset: -22% -16%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(12, 11, 10, 0.42) 0%, rgba(12, 11, 10, 0) 70%);
 }
 
 .line {

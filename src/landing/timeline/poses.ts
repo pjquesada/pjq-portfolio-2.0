@@ -13,15 +13,15 @@ export type Pose = {
 export type ViewportSize = { width: number; height: number }
 
 const heroViewport: Record<Breakpoint, { x: number; y: number; z: number }> = {
-  desktop: { x: 0.29, y: 0.5, z: 3.05 },
-  tablet: { x: 0.28, y: 0.5, z: 2.55 },
-  mobile: { x: 0.5, y: 0.3, z: 2.05 },
+  desktop: { x: 0.26, y: 0.5, z: 3.42 },
+  tablet: { x: 0.26, y: 0.5, z: 2.92 },
+  mobile: { x: 0.5, y: 0.28, z: 2.35 },
 }
 
 const heroSettleRotation: Record<Breakpoint, Vec3Tuple> = {
-  desktop: [0.52, -0.32, 0.04],
-  tablet: [0.48, -0.22, 0.03],
-  mobile: [0.62, 0.04, 0],
+  desktop: [0.62, -0.18, 0.03],
+  tablet: [0.58, -0.12, 0.02],
+  mobile: [0.72, 0.04, 0],
 }
 
 const heroHandoffRotation: Record<Breakpoint, Vec3Tuple> = {
@@ -99,7 +99,7 @@ export function peripheralPose(config: DominoConfig, progress: number): Pose {
   return {
     position: lerpTuple(config.initial.position, config.scatter.position, t),
     rotation: lerpTuple(config.initial.rotation, config.scatter.rotation, t),
-    scale: config.initial.scale,
+    scale: lerp(config.initial.scale, config.initial.scale * 0.58, t),
   }
 }
 
@@ -137,7 +137,7 @@ export function heroPose(
   const travel = span(progress, settle.start, settle.end, settle.ease)
   const spin = span(progress, settle.start, settle.end, settle.twirlEase ?? settle.ease)
 
-  // Full turns return to the authored front (logo). No extra half-flip onto the pips.
+  // Twirl is full 2π turns on X/Y so the authored logo face is the settle pose.
   const spun: Vec3Tuple = [
     settleRot[0] + settle.twirl[0],
     settleRot[1] + settle.twirl[1],

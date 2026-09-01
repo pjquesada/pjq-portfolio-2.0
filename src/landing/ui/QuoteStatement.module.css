@@ -4,31 +4,45 @@
   right: clamp(6vw, 8vw, 10vw);
   top: 50%;
   transform: translateY(-50%);
-  width: min(40vw, 28rem);
+  width: min(38vw, 26rem);
   margin: 0;
   pointer-events: none;
   color: var(--ivory);
+  opacity: 0;
 }
 
 .lines {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.46em;
+  align-items: flex-start;
+  gap: 0.58em;
   font-size: clamp(1.5rem, 2.45vw, 2.55rem);
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.45;
   letter-spacing: -0.035em;
+  text-align: left;
 }
 
 .mask {
   display: block;
   overflow: hidden;
+  position: relative;
+  height: 1.45em;
+  isolation: isolate;
 }
 
 .line {
   display: block;
+  height: 1.45em;
+  line-height: 1.45;
+  white-space: nowrap;
   transform: translate3d(0, 110%, 0);
+  will-change: transform;
+}
+
+.static {
+  opacity: 1;
 }
 
 .static .line {
@@ -38,7 +52,7 @@
 @media (max-width: 1099px) {
   .quote {
     right: 7vw;
-    width: min(46vw, 24rem);
+    width: min(44vw, 22rem);
   }
 }
 

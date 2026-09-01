@@ -24,7 +24,7 @@ export function DominoScene() {
         alpha: false,
         powerPreference: 'high-performance',
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 1.18,
+        toneMappingExposure: 1.22,
       }}
       camera={{
         position: initial.position,

@@ -70,14 +70,15 @@ export const HERO_DOMINO: DominoConfig = {
     ease: 'none',
   },
   settle: {
-    viewport: { x: 0.29, y: 0.5 },
-    worldZ: 3.05,
-    rotation: [0.52, -0.32, 0.04],
-    scale: 1.22,
+    viewport: { x: 0.26, y: 0.5 },
+    worldZ: 3.42,
+    rotation: [0.62, -0.18, 0.03],
+    scale: 1.28,
     start: 0.44,
     end: 0.82,
     ease: 'power4.out',
-    twirl: [Math.PI * 2, Math.PI * 0.85, 0.28],
+    // Full 2π turns only — leftover yaw would land on the pip face.
+    twirl: [Math.PI * 2, Math.PI * 2, 0],
     twirlEase: 'power2.out',
   },
   handoff: {
@@ -104,7 +105,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 1,
     },
     scatter: {
-      position: [-8.4, 0.35, -2.2],
+      position: [-9.2, 0.4, -2.6],
       rotation: [-2.1, -0.8, 1.35],
       start: 0.26,
       end: 0.5,
@@ -121,7 +122,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 0.98,
     },
     scatter: {
-      position: [-8.6, 0.12, 1.4],
+      position: [-9.6, 0.16, 1.8],
       rotation: [0.55, -1.15, 0.8],
       start: 0.28,
       end: 0.54,
@@ -138,7 +139,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 0.94,
     },
     scatter: {
-      position: [-4.8, -0.2, -6.2],
+      position: [-5.6, -0.35, -7.4],
       rotation: [0.9, 1.4, -0.6],
       start: 0.24,
       end: 0.48,
@@ -155,7 +156,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 1,
     },
     scatter: {
-      position: [-6.4, 0.55, 2.2],
+      position: [-7.4, 0.6, 2.8],
       rotation: [-1.05, 0.7, 1.55],
       start: 0.32,
       end: 0.56,
@@ -172,7 +173,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 0.92,
     },
     scatter: {
-      position: [-5.6, 0.45, 5.8],
+      position: [-6.6, 0.5, 6.6],
       rotation: [-0.85, 0.4, -1.1],
       start: 0.3,
       end: 0.52,
@@ -189,7 +190,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 1.02,
     },
     scatter: {
-      position: [7.2, 0.28, 2.1],
+      position: [8.4, 0.32, 2.6],
       rotation: [0.7, -0.95, -0.55],
       start: 0.3,
       end: 0.55,
@@ -206,7 +207,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 0.97,
     },
     scatter: {
-      position: [6.8, 0.4, 5.6],
+      position: [8.0, 0.45, 6.4],
       rotation: [-1.2, 0.65, 0.9],
       start: 0.27,
       end: 0.5,
@@ -223,7 +224,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 1,
     },
     scatter: {
-      position: [9.2, 0.18, -1.4],
+      position: [10.4, 0.22, -1.8],
       rotation: [0.35, 0.8, -1.4],
       start: 0.25,
       end: 0.49,
@@ -240,7 +241,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 0.96,
     },
     scatter: {
-      position: [9.4, 0.55, -3.2],
+      position: [10.6, 0.6, -3.8],
       rotation: [-1.6, 1.5, 0.7],
       start: 0.22,
       end: 0.47,
@@ -257,7 +258,7 @@ export const SCATTER_DOMINOES: DominoConfig[] = [
       scale: 0.93,
     },
     scatter: {
-      position: [5.6, -0.25, -6.8],
+      position: [6.6, -0.35, -8.0],
       rotation: [1.1, -0.7, 0.4],
       start: 0.23,
       end: 0.46,

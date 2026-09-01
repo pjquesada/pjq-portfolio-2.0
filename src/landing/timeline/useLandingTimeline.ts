@@ -54,8 +54,9 @@ export function useLandingTimeline({
           line.style.transform = `translate3d(0, ${(1 - t) * 110}%, 0)`
         })
 
+        const quoteIn = span(progress, 0.58, 0.66, 'none')
         const quoteOut = span(progress, 0.9, 0.98, 'power2.in')
-        quote.style.opacity = String(1 - quoteOut)
+        quote.style.opacity = String(quoteIn * (1 - quoteOut))
 
         if (indicator) {
           indicator.style.opacity = String(1 - span(progress, 0, 0.08))

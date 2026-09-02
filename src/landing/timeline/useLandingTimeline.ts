@@ -48,7 +48,7 @@ export function useLandingTimeline({
         name.style.clipPath = `inset(0% 0% ${nameOut * 100}% 0%)`
         name.style.opacity = String(1 - nameOut)
 
-        const quoteIn = span(progress, 0.62, 0.76, 'power3.out')
+        const quoteIn = span(progress, 0.72, 0.84, 'power3.out')
         const quoteOut = span(progress, 0.9, 0.98, 'power2.in')
         quote.style.opacity = String(quoteIn * (1 - quoteOut))
         quote.style.transform = `translate3d(0, ${(1 - quoteIn) * 1.15}rem, 0)`

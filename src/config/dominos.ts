@@ -70,11 +70,11 @@ export const HERO_DOMINO: DominoConfig = {
     ease: 'none',
   },
   settle: {
-    viewport: { x: 0.3, y: 0.5 },
-    worldZ: 2.28,
+    viewport: { x: 0.34, y: 0.5 },
+    worldZ: 2.05,
     // ~11° from camera-facing so thickness and bevels still read.
     rotation: [1.38, -0.12, 0.05],
-    scale: 1.58,
+    scale: 1.36,
     start: 0.44,
     end: 0.82,
     ease: 'power4.out',
@@ -283,7 +283,7 @@ export const TIMELINE = {
   scatter: { start: 0.25, end: 0.55 },
   heroTravel: { start: 0.44, end: 0.82 },
   quote: {
-    start: 0.62,
+    start: 0.72,
     stagger: 0.045,
     duration: 0.1,
   },

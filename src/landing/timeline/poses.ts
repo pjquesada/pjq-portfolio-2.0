@@ -13,9 +13,9 @@ export type Pose = {
 export type ViewportSize = { width: number; height: number }
 
 const heroViewport: Record<Breakpoint, { x: number; y: number; z: number }> = {
-  desktop: { x: 0.3, y: 0.5, z: 2.28 },
-  tablet: { x: 0.3, y: 0.5, z: 2.15 },
-  mobile: { x: 0.5, y: 0.32, z: 2.05 },
+  desktop: { x: 0.34, y: 0.5, z: 2.05 },
+  tablet: { x: 0.34, y: 0.5, z: 1.95 },
+  mobile: { x: 0.5, y: 0.32, z: 1.9 },
 }
 
 const heroSettleRotation: Record<Breakpoint, Vec3Tuple> = {

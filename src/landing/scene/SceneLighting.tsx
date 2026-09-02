@@ -11,14 +11,14 @@ export function SceneLighting() {
       <color attach="background" args={['#0c0b0a']} />
       <fog attach="fog" args={['#0c0b0a', 22, 40]} />
       {/* Broad, even sky/ground so ivory reads without a table hotspot behind the name. */}
-      <hemisphereLight args={['#f8f3ea', '#2a241c', mobile ? 0.92 : 1.08]} />
-      <ambientLight intensity={0.46} color="#f3ebe0" />
+      <hemisphereLight args={['#f8f3ea', '#2a241c', mobile ? 0.84 : 0.98]} />
+      <ambientLight intensity={0.42} color="#f3ebe0" />
       {/* Soft key from upper-front-right — off the headline axis. */}
-      <directionalLight position={[7.4, 4.6, 8.6]} intensity={mobile ? 0.92 : 1.05} color="#fff6ec" />
+      <directionalLight position={[7.4, 4.6, 8.6]} intensity={mobile ? 0.82 : 0.94} color="#fff6ec" />
       {/* Camera-aligned fill: lifts faces the viewer sees (bevels, pips, logo). */}
-      <directionalLight position={[0.2, 2.4, 10.4]} intensity={0.78} color="#f7f0e6" />
+      <directionalLight position={[0.2, 2.4, 10.4]} intensity={0.72} color="#f7f0e6" />
       {/* Opposite fill, lower, so the left edge does not fall to black. */}
-      <directionalLight position={[-6.2, 2.6, 5.8]} intensity={0.42} color="#ebe4d8" />
+      <directionalLight position={[-6.2, 2.6, 5.8]} intensity={0.39} color="#ebe4d8" />
       {/* Hairline rim, camera-opposite, only to separate silhouettes. */}
       <directionalLight position={[-1.6, 3.8, -5.4]} intensity={0.12} color="#f0e6d6" />
       {shadows ? (

@@ -33,11 +33,13 @@ export function CameraRig() {
     const pose = cameraPoseAt(tProgress, breakpoint)
     const amount = cameraParallax[breakpoint]
     const handoff = Math.max(0, (tProgress - 0.88) / 0.12)
-    const damp = 1 - Math.exp(-delta * 2.6)
+    const settled = THREE.MathUtils.smoothstep(tProgress, 0.7, 0.84)
+    const still = 1 - settled * 0.94
+    const damp = 1 - Math.exp(-delta * (2.6 + settled * 3.2))
 
     parallax.set(
-      pointer.current.x * amount.x * (1 - handoff),
-      -pointer.current.y * amount.y * (1 - handoff),
+      pointer.current.x * amount.x * still * (1 - handoff),
+      -pointer.current.y * amount.y * still * (1 - handoff),
       0,
     )
 

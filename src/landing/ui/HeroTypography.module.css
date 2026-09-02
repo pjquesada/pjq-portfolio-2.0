@@ -46,7 +46,7 @@
   z-index: 1;
   isolation: isolate;
   font-weight: 700;
-  font-size: clamp(3.4rem, 12.4vw, 11.25rem);
+  font-size: clamp(3.9rem, 14.25vw, 12.95rem);
   line-height: 0.84;
   letter-spacing: -0.055em;
   clip-path: inset(0% 0% 0% 0%);
@@ -80,7 +80,7 @@
   }
 
   .name {
-    font-size: clamp(2.8rem, 16vw, 4.2rem);
+    font-size: clamp(3.15rem, 17.8vw, 4.75rem);
     letter-spacing: -0.05em;
   }
 

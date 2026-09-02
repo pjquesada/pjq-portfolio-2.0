@@ -72,8 +72,8 @@ export const HERO_DOMINO: DominoConfig = {
   settle: {
     viewport: { x: 0.34, y: 0.5 },
     worldZ: 2.05,
-    // ~11° from camera-facing so thickness and bevels still read.
-    rotation: [1.38, -0.12, 0.05],
+    // ~8° from camera-facing so thickness and bevels still read.
+    rotation: [1.46, -0.09, 0.04],
     scale: 1.36,
     start: 0.44,
     end: 0.82,

@@ -19,9 +19,9 @@ const heroViewport: Record<Breakpoint, { x: number; y: number; z: number }> = {
 }
 
 const heroSettleRotation: Record<Breakpoint, Vec3Tuple> = {
-  desktop: [1.46, -0.09, 0.04],
-  tablet: [1.42, -0.06, 0.03],
-  mobile: [1.4, 0.03, 0],
+  desktop: [1.5, 0.18, 0.03],
+  tablet: [1.46, 0.12, 0.02],
+  mobile: [1.44, 0, 0],
 }
 
 const heroHandoffRotation: Record<Breakpoint, Vec3Tuple> = {

@@ -139,6 +139,12 @@
   text-transform: uppercase;
 }
 
+@media (min-width: 1100px) {
+  .about {
+    padding-left: 6.5rem;
+  }
+}
+
 @media (max-width: 767px) {
   .grid,
   .list {

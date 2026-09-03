@@ -1,0 +1,8 @@
+.index {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ivory-muted);
+}

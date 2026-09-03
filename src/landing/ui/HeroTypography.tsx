@@ -15,6 +15,9 @@ export function HeroTypography({ reducedMotion }: Props) {
           <span className={styles.line}>{site.name.first}</span>
           <span className={styles.line}>{site.name.last}</span>
         </h1>
+        <p className={styles.fragment} data-hero-fragment>
+          {site.fragment}
+        </p>
       </div>
     </header>
   )

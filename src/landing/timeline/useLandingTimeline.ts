@@ -31,6 +31,7 @@ export function useLandingTimeline({
       if (cancelled) return
 
       const name = stage.querySelector<HTMLElement>('[data-hero-name]')
+      const fragment = stage.querySelector<HTMLElement>('[data-hero-fragment]')
       const quote = stage.querySelector<HTMLElement>('[data-quote]')
       const masks = gsap.utils.toArray<HTMLElement>('[data-quote-mask]', stage)
       const indicator = stage.querySelector<HTMLElement>('[data-scroll-indicator]')
@@ -47,6 +48,7 @@ export function useLandingTimeline({
         const nameOut = span(progress, 0.15, 0.3, 'power2.inOut')
         name.style.clipPath = `inset(0% 0% ${nameOut * 100}% 0%)`
         name.style.opacity = String(1 - nameOut)
+        if (fragment) fragment.style.opacity = String(1 - nameOut)
 
         const quoteIn = span(progress, 0.72, 0.84, 'power3.out')
         const quoteOut = span(progress, 0.9, 0.98, 'power2.in')
@@ -72,6 +74,7 @@ export function useLandingTimeline({
         apply(0)
         name.style.clipPath = 'inset(0% 0% 0% 0%)'
         name.style.opacity = '1'
+        if (fragment) fragment.style.opacity = '1'
         masks.forEach((mask) => {
           mask.style.clipPath = 'none'
         })

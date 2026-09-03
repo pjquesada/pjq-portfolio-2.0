@@ -1,0 +1,20 @@
+.pips {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
+  vertical-align: middle;
+}
+
+.pip {
+  width: 0.38em;
+  height: 0.38em;
+  border-radius: 50%;
+  border: 1px solid var(--ivory-muted);
+  background: transparent;
+  display: block;
+}
+
+.on {
+  background: var(--ivory);
+  border-color: var(--ivory);
+}

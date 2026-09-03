@@ -3,7 +3,7 @@ import { Pips } from '@/brand/Pips'
 import { SectionIndex } from '@/brand/SectionIndex'
 import { usePrefersReducedMotion } from '@/landing/hooks/usePrefersReducedMotion'
 import reveal from './reveal.module.css'
-import { Reveal } from './useReveal'
+import { Reveal } from './useReveal.tsx'
 import styles from './SelectedWork.module.css'
 
 export function SelectedWork() {

@@ -4,7 +4,7 @@ import { SectionIndex } from '@/brand/SectionIndex'
 import { SketchMark } from '@/brand/SketchMark'
 import { usePrefersReducedMotion } from '@/landing/hooks/usePrefersReducedMotion'
 import reveal from './reveal.module.css'
-import { Reveal } from './useReveal'
+import { Reveal } from './useReveal.tsx'
 import styles from './AboutSection.module.css'
 
 export function AboutSection() {

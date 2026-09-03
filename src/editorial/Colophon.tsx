@@ -3,7 +3,7 @@ import { site } from '@/config/site'
 import { SectionIndex } from '@/brand/SectionIndex'
 import { usePrefersReducedMotion } from '@/landing/hooks/usePrefersReducedMotion'
 import reveal from './reveal.module.css'
-import { Reveal } from './useReveal'
+import { Reveal } from './useReveal.tsx'
 import styles from './Colophon.module.css'
 
 const TILES = [0, 1, 2, 3, 4]
